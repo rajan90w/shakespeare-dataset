@@ -1,0 +1,279 @@
+# Contributing to Shakespeare Dataset 🎭
+
+Thank you for your interest in contributing! This is a community project, and we welcome contributions of all kinds.
+
+## Types of Contributions Welcome
+
+### 🐛 Bug Reports
+Found an issue? Please report it!
+- Check if the issue already exists
+- Provide clear description with examples
+- Include your OS/environment if relevant
+
+### 📚 Documentation
+Help improve our docs:
+- Fix typos or unclear explanations
+- Add examples or tutorials
+- Create guides for specific use cases
+- Improve README sections
+
+### 💡 Feature Requests
+Have an idea to improve the dataset?
+- Suggest preprocessing techniques
+- Propose new data formats (JSONL, Parquet, etc.)
+- Request additional metadata
+- Propose subset datasets
+
+### 🧪 Research Findings
+Share your discoveries:
+- Results from experiments with the dataset
+- Benchmarks on ML models
+- Linguistic analysis
+- Novel applications
+
+### 🔧 Code Contributions
+Contribute helper scripts:
+- Data extraction tools
+- Analysis scripts
+- Fine-tuning templates
+- Evaluation utilities
+
+### 📊 Data Enhancements (Optional)
+Suggest improvements:
+- Scene-level annotations
+- Character metadata
+- Thematic classifications
+- Versioning metadata
+
+## How to Contribute
+
+### Getting Started
+
+1. **Fork the repository**
+   ```bash
+   git clone https://github.com/yourusername/shakespeare-dataset.git
+   cd shakespeare-dataset
+   ```
+
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   # or
+   git checkout -b fix/your-bug-fix
+   ```
+
+3. **Make your changes**
+   - Keep commits focused and well-documented
+   - Follow existing code style
+   - Add comments for complex logic
+
+4. **Submit a Pull Request**
+   - Clear title and description
+   - Reference any related issues
+   - Explain why the change is valuable
+
+### Code Style Guidelines
+
+#### Python
+```python
+# Use type hints
+def extract_play(text: str, play_name: str) -> str:
+    """Extract specific play from complete works.
+    
+    Args:
+        text: Complete Shakespeare text
+        play_name: Name of play to extract
+        
+    Returns:
+        Text of the specified play
+    """
+    pass
+
+# Use meaningful variable names
+character_dialogues = extract_dialogues(play_text)
+# NOT: cd = extract_dialogues(pt)
+
+# Add docstrings to functions
+# Keep lines under 88 characters
+# Use f-strings for formatting
+```
+
+#### Markdown
+```markdown
+# Use clear headings
+## Organize with hierarchy
+- Use bullet points
+- Keep paragraphs short
+- Use code blocks for examples
+
+**Bold** for emphasis
+`inline code` for technical terms
+[Links](https://example.com) with context
+```
+
+### Testing
+
+Before submitting:
+
+1. **Test your code changes**
+   ```bash
+   python your_script.py
+   # Verify output is correct
+   ```
+
+2. **Check file format**
+   ```bash
+   file final_dataset.txt
+   # Should be: UTF-8 Unicode text, with very long lines
+   ```
+
+3. **Validate documentation**
+   - Grammar check
+   - Link validation
+   - Code example execution
+
+## Contribution Ideas
+
+### For Data Scientists/ML Researchers
+- [ ] Create fine-tuning dataset in JSONL format
+- [ ] Generate token count benchmarks with different tokenizers
+- [ ] Develop preprocessing pipeline for your use case
+- [ ] Share model training results/benchmarks
+- [ ] Create data augmentation scripts
+
+### For NLP Researchers
+- [ ] Linguistic analysis scripts
+- [ ] Named entity recognition examples
+- [ ] Sentiment analysis tools
+- [ ] Character network analysis
+- [ ] Metrical analysis tools
+
+### For Software Developers
+- [ ] Data loading utilities
+- [ ] Batch processing pipeline
+- [ ] Dataset splitting tools
+- [ ] Character extraction scripts
+- [ ] Play similarity metrics
+
+### For Content Creators
+- [ ] Tutorials on using the dataset
+- [ ] Blog posts about findings
+- [ ] Video guides
+- [ ] Jupyter notebooks
+- [ ] Use case examples
+
+### For Educators
+- [ ] Learning materials
+- [ ] Educational guides
+- [ ] Curriculum examples
+- [ ] Student projects
+- [ ] Assignment ideas
+
+## Pull Request Process
+
+1. **Update documentation** if you're changing functionality
+2. **Add examples** if relevant
+3. **Test thoroughly** before submitting
+4. **Write clear commit messages**
+   ```
+   Add feature: Extract individual plays with annotations
+   
+   - Adds extract_play.py script
+   - Supports play name and act/scene filtering
+   - Includes unit tests
+   - Documented with examples
+   ```
+5. **Link to relevant issues**
+   ```
+   Fixes #123
+   Related to #456
+   ```
+
+## Issue Labels
+
+We use labels to categorize issues:
+- `bug` - Confirmed issue
+- `enhancement` - Feature request
+- `documentation` - Doc improvements
+- `research` - Academic/research focused
+- `good-first-issue` - Good for newcomers
+- `help-wanted` - Looking for contributions
+
+## Community Guidelines
+
+### Be Respectful
+- Treat others with respect
+- Assume good intentions
+- Be patient with newcomers
+- Provide constructive feedback
+
+### Be Collaborative
+- Share knowledge
+- Help others
+- Acknowledge contributions
+- Celebrate successes
+
+### Be Honest
+- Disclose conflicts of interest
+- Admit mistakes
+- Provide accurate information
+- Cite sources properly
+
+## Recognition
+
+Contributors will be:
+- Added to CONTRIBUTORS.md
+- Acknowledged in releases
+- Featured on the repository page
+- Credited in documentation
+
+## Questions?
+
+- Open a GitHub Discussion
+- Check existing issues
+- Review documentation
+- Ask in Pull Request comments
+
+## Additional Resources
+
+- [GitHub Guides](https://guides.github.com/)
+- [How to Write Good Commit Messages](https://chris.beams.io/posts/git-commit/)
+- [Open Source Contribution Guide](https://opensource.guide/how-to-contribute/)
+
+## Recognition Policy
+
+### Contributors Page
+Everyone who contributes (no matter how small) will be recognized:
+- Pull request mergers
+- Issue reporters
+- Documentation improvers
+- Code contributors
+- Research sharers
+
+### Levels of Contribution
+- ⭐ One-time contributor
+- ⭐⭐ Regular contributor (3+ merged PRs)
+- ⭐⭐⭐ Core contributor (10+ merged PRs)
+- ⭐⭐⭐⭐ Maintainer candidate
+
+## License Agreement
+
+By contributing to this repository, you agree that:
+- Your contributions will be in the public domain (same as dataset)
+- You have the right to contribute the work
+- You agree to the project's license terms
+
+## Thank You! 🎉
+
+Every contribution makes this dataset better for the entire community. Thank you for your interest and support!
+
+---
+
+**Happy Contributing!**
+
+For specific questions about contribution process:
+- Create a GitHub Issue
+- Start a Discussion
+- Email: your-email@example.com
+
+Last Updated: November 2025
