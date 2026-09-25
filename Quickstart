@@ -1,0 +1,407 @@
+# Quick Start Guide 🚀
+
+Get started with the Shakespeare Dataset in 5 minutes!
+
+## Installation
+
+### Option 1: Clone the Repository
+```bash
+git clone https://github.com/yourusername/shakespeare-dataset.git
+cd shakespeare-dataset
+```
+
+### Option 2: Download Just the Data
+```bash
+# Download only the dataset file
+curl -O https://raw.githubusercontent.com/yourusername/shakespeare-dataset/main/final_dataset.txt
+```
+
+## Basic Usage
+
+### Python: Load the Dataset
+
+```python
+# Simple loading
+with open('final_dataset.txt', 'r', encoding='utf-8') as f:
+    shakespeare_text = f.read()
+
+print(f"Loaded {len(shakespeare_text):,} characters")
+print(f"~{len(shakespeare_text.split()):,} words")
+```
+
+**Output:**
+```
+Loaded 5,378,701 characters
+~966,506 words
+```
+
+### Get Basic Statistics
+
+```python
+text_stats = {
+    'lines': len(shakespeare_text.split('\n')),
+    'words': len(shakespeare_text.split()),
+    'characters': len(shakespeare_text),
+    'paragraphs': len(shakespeare_text.split('\n\n')),
+}
+
+for key, value in text_stats.items():
+    print(f"{key.title()}: {value:,}")
+```
+
+### Find Specific Plays
+
+```python
+# Find where Hamlet starts
+hamlet_start = shakespeare_text.find('HAMLET')
+if hamlet_start != -1:
+    print(f"Hamlet found at character {hamlet_start:,}")
+    print(shakespeare_text[hamlet_start:hamlet_start+200])
+```
+
+## Common Tasks
+
+### 1. Extract a Single Play
+
+```python
+import re
+
+def extract_play(text, play_name):
+    """Extract a specific play from the complete works."""
+    # Find play title
+    pattern = play_name.upper()
+    match = re.search(pattern, text)
+    
+    if not match:
+        return None
+    
+    # Find start (beginning of play section)
+    start = text.rfind('\n\n\n', 0, match.start())
+    if start == -1:
+        start = 0
+    
+    # Find end (next play marker or end of file)
+    end = text.find('\n\n\n' + text[start:start+20].split('\n')[0], start + 100)
+    if end == -1:
+        end = len(text)
+    
+    return text[start:end]
+
+# Usage
+hamlet_text = extract_play(shakespeare_text, 'HAMLET')
+print(f"Hamlet: {len(hamlet_text):,} characters")
+
+# Get some famous lines
+print(hamlet_text[:1000])  # First 1000 characters
+```
+
+### 2. Extract All Sonnets
+
+```python
+def extract_sonnets(text):
+    """Extract all sonnets from the text."""
+    start = text.find('THE SONNETS')
+    end = text.find('ALL\'S WELL THAT ENDS WELL')
+    
+    if start != -1 and end != -1:
+        return text[start:end]
+    return None
+
+# Usage
+sonnets = extract_sonnets(shakespeare_text)
+print(f"Sonnets: {len(sonnets):,} characters")
+print(sonnets[:500])
+```
+
+### 3. Count Character Appearances
+
+```python
+def count_character_mentions(text, character_name):
+    """Count how many times a character is mentioned."""
+    # Simple word count (not perfect, but good approximation)
+    pattern = f'\\b{character_name}\\b'
+    matches = re.findall(pattern, text, re.IGNORECASE)
+    return len(matches)
+
+# Usage
+hamlet_mentions = count_character_mentions(shakespeare_text, 'Hamlet')
+print(f"Hamlet mentioned: {hamlet_mentions} times")
+
+ophelia_mentions = count_character_mentions(shakespeare_text, 'Ophelia')
+print(f"Ophelia mentioned: {ophelia_mentions} times")
+```
+
+### 4. Tokenize for ML
+
+```python
+# Using transformers library (install: pip install transformers)
+from transformers import AutoTokenizer
+
+# Load tokenizer
+tokenizer = AutoTokenizer.from_pretrained('gpt2')
+
+# Tokenize dataset
+tokens = tokenizer.encode(shakespeare_text)
+
+print(f"Total tokens (GPT-2): {len(tokens):,}")
+print(f"First 20 tokens: {tokens[:20]}")
+
+# Calculate tokens per word
+print(f"Tokens per word: {len(tokens) / len(shakespeare_text.split()):.2f}")
+```
+
+### 5. Find Famous Quotes
+
+```python
+def find_quotes(text, search_term):
+    """Find text containing specific phrases."""
+    lines = text.split('\n')
+    matching_lines = [line for line in lines 
+                     if search_term.lower() in line.lower()]
+    return matching_lines
+
+# Usage
+to_be_quotes = find_quotes(shakespeare_text, "To be")
+print(f"Found {len(to_be_quotes)} lines with 'To be'")
+for quote in to_be_quotes[:3]:
+    print(f"  {quote.strip()}")
+
+# Output:
+# Found 5 lines with 'To be'
+#   To be, or not to be, that is the question:
+#   ...
+```
+
+## Advanced Usage
+
+### Tokenization Analysis
+
+```python
+import re
+from collections import Counter
+
+def analyze_vocabulary(text, top_n=50):
+    """Analyze vocabulary in the text."""
+    # Extract words
+    words = re.findall(r'\b[a-z]+\b', text.lower())
+    
+    # Count frequencies
+    word_freq = Counter(words)
+    
+    # Get top words
+    top_words = word_freq.most_common(top_n)
+    
+    return top_words
+
+# Usage
+top_50 = analyze_vocabulary(shakespeare_text, 50)
+print("Top 50 most common words:")
+for word, count in top_50[:20]:
+    print(f"  {word}: {count:,}")
+```
+
+### Prepare for Fine-tuning
+
+```python
+import json
+
+def prepare_finetuning_data(text, output_file, chunk_size=500):
+    """Prepare data in JSONL format for fine-tuning."""
+    lines = text.split('\n')
+    chunks = []
+    
+    # Create chunks
+    for i in range(0, len(lines), chunk_size):
+        chunk = ' '.join(lines[i:i+chunk_size])
+        if chunk.strip():
+            chunks.append({'text': chunk})
+    
+    # Save as JSONL
+    with open(output_file, 'w') as f:
+        for chunk in chunks:
+            f.write(json.dumps(chunk) + '\n')
+    
+    print(f"Created {len(chunks)} chunks in {output_file}")
+
+# Usage
+prepare_finetuning_data(shakespeare_text, 'shakespeare_training.jsonl')
+```
+
+### Calculate Dataset Statistics
+
+```python
+def get_dataset_stats(text):
+    """Calculate comprehensive statistics."""
+    lines = text.split('\n')
+    words = text.split()
+    chars = len(text)
+    
+    # Calculate averages
+    avg_line_length = len(words) / len(lines)
+    avg_word_length = chars / len(words)
+    
+    # Find longest lines
+    longest_lines = sorted(lines, key=len, reverse=True)[:5]
+    
+    return {
+        'total_lines': len(lines),
+        'total_words': len(words),
+        'total_characters': chars,
+        'avg_line_length': round(avg_line_length, 2),
+        'avg_word_length': round(avg_word_length, 2),
+        'longest_line': longest_lines[0][:100] + '...',
+    }
+
+# Usage
+stats = get_dataset_stats(shakespeare_text)
+for key, value in stats.items():
+    print(f"{key}: {value}")
+```
+
+## Using with Claude API
+
+### Analyze Shakespeare Text with Claude
+
+```python
+import anthropic
+
+client = anthropic.Anthropic()
+
+# Load dataset
+with open('final_dataset.txt', 'r') as f:
+    full_text = f.read()
+
+# Use just a portion for API call
+sample_text = full_text[:10000]  # First 10K characters
+
+response = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=500,
+    messages=[
+        {
+            "role": "user",
+            "content": f"""Analyze the themes in this Shakespeare text:
+
+{sample_text}
+
+What are the main themes and emotions expressed?"""
+        }
+    ]
+)
+
+print(response.content[0].text)
+```
+
+### Generate Shakespearean Text
+
+```python
+response = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=500,
+    messages=[
+        {
+            "role": "user",
+            "content": """Based on Shakespeare's complete works, 
+            write an original Shakespearean sonnet about modern technology."""
+        }
+    ]
+)
+
+print(response.content[0].text)
+```
+
+## Command Line Usage
+
+### Count Words
+
+```bash
+# Using wc
+wc -w final_dataset.txt
+# Output: 966506 final_dataset.txt
+
+# Using grep
+grep -o '\w\+' final_dataset.txt | wc -l
+# Output: 966506
+```
+
+### Search for Text
+
+```bash
+# Find lines with "To be"
+grep -i "to be" final_dataset.txt
+
+# Count occurrences
+grep -io "to be" final_dataset.txt | wc -l
+
+# Case-sensitive search
+grep "Romeo" final_dataset.txt | wc -l
+```
+
+### Extract Plays
+
+```bash
+# Extract Hamlet (from line with HAMLET to next major section)
+sed -n '/HAMLET/,/ALL.*WELL/p' final_dataset.txt > hamlet.txt
+
+# Extract sonnets
+sed -n '/THE SONNETS/,/ALL.*WELL/p' final_dataset.txt > sonnets.txt
+```
+
+## Troubleshooting
+
+### File Too Large?
+```python
+# Read in chunks for memory efficiency
+def read_large_file(filename, chunk_size=1024*1024):
+    with open(filename, 'r', encoding='utf-8') as f:
+        while True:
+            chunk = f.read(chunk_size)
+            if not chunk:
+                break
+            yield chunk
+
+# Usage
+for chunk in read_large_file('final_dataset.txt'):
+    # Process chunk
+    pass
+```
+
+### Encoding Issues?
+```python
+# Try different encodings
+try:
+    with open('final_dataset.txt', 'r', encoding='utf-8') as f:
+        text = f.read()
+except UnicodeDecodeError:
+    # Fallback to latin-1
+    with open('final_dataset.txt', 'r', encoding='latin-1') as f:
+        text = f.read()
+```
+
+## Next Steps
+
+1. **Explore the data** - Run the examples above
+2. **Build something** - Use it in a project
+3. **Share results** - Contribute your findings
+4. **Join community** - Star the repository
+5. **Cite properly** - Credit Project Gutenberg & Shakespeare
+
+## Resources
+
+- [Full Documentation](README.md)
+- [Dataset Analysis](DATASET_ANALYSIS.md)
+- [Contributing Guide](CONTRIBUTING.md)
+- [Examples Directory](examples/)
+
+## Questions?
+
+- Check GitHub Issues
+- Start a Discussion
+- Review examples
+- Read the README
+
+Happy exploring! 🎭
+
+---
+
+**Last Updated:** November 2025
